@@ -1,7 +1,30 @@
-import express from 'express'
+import "reflect-metadata";
+import express, { NextFunction, Request, Response } from "express";
 
-const app = express()
-app.use(express.json())
+import "express-async-errors";
+import "./database";
+import "./shared/container";
+import { AppError } from "./errors/AppError";
+import { userRoutes } from "./routes/user.routes";
 
+const app = express();
+app.use(express.json());
 
-app.listen(3333,()=> console.log("Server is running!"))
+app.use("/user", userRoutes);
+
+app.use(
+  (err: Error, request: Request, response: Response, next: NextFunction) => {
+    if (err instanceof AppError) {
+      return response.status(err.statusCode).json({
+        message: err.message,
+      });
+    }
+    return response.status(500).json({
+      status: "error",
+      message: `Internal server error - ${err.message}`,
+    });
+    next();
+  }
+);
+
+app.listen(3333, () => console.log("Server is running!"));

@@ -1,0 +1,12 @@
+version: "3.7"
+
+services: 
+  hackaton:
+    image: postgres
+    container_name: hackaton_team22
+    ports: 
+      - 5432:5432
+    environment: 
+      - POSTGRES_USER=hackaton
+      - POSTGRES_PASSWORD=team22
+      - POSTGRES_DB=hackaton

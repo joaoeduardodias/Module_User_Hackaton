@@ -5,12 +5,14 @@ import "express-async-errors";
 import "./database";
 import "./shared/container";
 import { AppError } from "./errors/AppError";
+import { authenticateRoutes } from "./routes/authenticate.routes";
 import { userRoutes } from "./routes/user.routes";
 
 const app = express();
 app.use(express.json());
 
 app.use("/user", userRoutes);
+app.use(authenticateRoutes);
 
 app.use(
   (err: Error, request: Request, response: Response, next: NextFunction) => {
